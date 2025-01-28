@@ -1,0 +1,26 @@
+annotations:
+  screwdriver.cd/chainPR: true
+
+shared:
+  image: node:18
+  steps:
+    - param1: echo "$(meta get parameters.param1.value)"
+    - param2: echo "$(meta get parameters.param2.value)"
+    - param3: echo "$(meta get parameters.param3.value)"
+    - param4: echo "$(meta get parameters.param4.value)"
+
+jobs:
+  job1:
+    requires: [ ~commit, ~pr ]
+    parameters:
+      param1: "foo"
+  job2:
+    requires: [ ~job1 ]
+    parameters:
+      param3: "baz"
+  job3:
+    requires: [ ~job1 ]
+  notPr:
+    requires: [ ~commit ]
+    parameters:
+      param4: "hoge"
